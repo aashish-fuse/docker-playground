@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  mlflow:
+    image: aashish-fuse/docker-mlflow
+    build:
+      context: .
+      dockerfile: mlflow.Dockerfile
+    environment:
+      - MLFLOW_PORT=${MLFLOW_PORT}
+    ports:
+      - "${MLFLOW_PORT}:${MLFLOW_PORT}"
+    volumes:
+      - mlruns:/app/mlruns
+
+  jupyter:
+    image: aashish-fuse/docker-jupyter
+    build:
+      context: .
+      dockerfile: jupyter.Dockerfile
+    environment:
+      - JUPYTER_PORT=${JUPYTER_PORT}
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN}
+    ports:
+      - "${JUPYTER_PORT}:${JUPYTER_PORT}"
+    volumes:
+      - mlruns:/app/mlruns
+
+volumes:
+  mlruns:
+    driver: local
+    driver_opts:
+      device: /home/fm-pc-lt-284/Projects/Fusemachines/DS_Expert/mlflow/docker_playground/mlruns
+      o: bind
+      type: none
