@@ -1,0 +1,2 @@
+aim==3.18.1
+jupyterlab==4.1.2

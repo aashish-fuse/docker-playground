@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  aim:
+    image: aashish-fuse/docker-aim
+    build:
+      context: .
+      dockerfile: aim.Dockerfile
+    environment:
+      - AIM_PORT=${AIM_PORT}
+    ports:
+      - "${AIM_PORT}:${AIM_PORT}"
+    volumes:
+      - aim:/app/aim
+
+  jupyter-cuda:
+    image: aashish-fuse/docker-jupyter-cuda
+    build:
+      context: .
+      dockerfile: pytorch.Dockerfile
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      - JUPYTER_PORT=${JUPYTER_PORT}
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN}
+    ports:
+      - "${JUPYTER_PORT}:${JUPYTER_PORT}"
+    volumes:
+      - aim:/app/aim
+
+volumes:
+  aim:
+    driver: local
+    driver_opts:
+      device: /home/fm-pc-lt-284/Projects/Fusemachines/DS_Expert/docker-playground/aim
+      o: bind
+      type: none
