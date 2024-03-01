@@ -30,6 +30,6 @@ volumes:
   mlruns:
     driver: local
     driver_opts:
-      device: /home/fm-pc-lt-284/Projects/Fusemachines/DS_Expert/mlflow/docker_playground/mlruns
+      device: /home/fm-pc-lt-284/Projects/Fusemachines/DS_Expert/docker-playground/mlruns
       o: bind
       type: none
