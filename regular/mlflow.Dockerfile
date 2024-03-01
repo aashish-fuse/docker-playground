@@ -3,7 +3,7 @@ LABEL MAINTAINER aashish@fusemachines.com
 
 WORKDIR /app
 
-RUN apt update && apt upgrade && apt install sqlite3
+RUN apt update && apt upgrade -y && apt install -y sqlite3
 RUN pip install --upgrade pip \
     && pip --no-cache-dir install "mlflow==2.10.2"
 

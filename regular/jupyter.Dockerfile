@@ -4,7 +4,7 @@ LABEL MAINTAINER aashish@fusemachines.com
 WORKDIR /app
 
 COPY requirements.txt .
-RUN apt update && apt upgrade && apt install -y git nodejs
+RUN apt update && apt upgrade -y && apt install -y git nodejs
 RUN pip install --upgrade pip \
     && pip --no-cache-dir install -r requirements.txt
 RUN jupyter server --generate-config \
