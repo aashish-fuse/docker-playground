@@ -7,17 +7,21 @@ services:
       context: .
       dockerfile: aim.Dockerfile
     environment:
+      - AIM_DIR=${AIM_DIR}
       - AIM_PORT=${AIM_PORT}
     ports:
       - "${AIM_PORT}:${AIM_PORT}"
     volumes:
-      - aim:/app/aim
+      - aim:/app/${AIM_DIR}
 
   jupyter-cuda:
     image: aashish-fuse/docker-jupyter-cuda
     build:
       context: .
       dockerfile: pytorch.Dockerfile
+    depends_on:
+      aim:
+        condition: service_started
     deploy:
       resources:
         reservations:
@@ -31,12 +35,12 @@ services:
     ports:
       - "${JUPYTER_PORT}:${JUPYTER_PORT}"
     volumes:
-      - aim:/app/aim
+      - aim:/app/${AIM_DIR}
 
 volumes:
   aim:
     driver: local
     driver_opts:
-      device: /home/fm-pc-lt-284/Projects/Fusemachines/DS_Expert/docker-playground/aim
+      device: "${VOLUME_DEV}"
       o: bind
       type: none

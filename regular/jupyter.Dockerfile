@@ -8,9 +8,9 @@ RUN apt update && apt upgrade -y && apt install -y git nodejs
 RUN pip install --upgrade pip \
     && pip --no-cache-dir install -r requirements.txt
 RUN jupyter server --generate-config \
-    && echo "c.IdentityProvider.hashed_password='$(python -c \
-    "from jupyter_server.auth import passwd; print(passwd('$JUPYTER_TOKEN'))" \
-    )'" >> /root/.jupyter/jupyter_server_config.py
+    && echo 'c.IdentityProvider.hashed_password="$(python -c \
+    "from jupyter_server.auth import passwd; print(passwd("$JUPYTER_TOKEN"))" \
+    )"' >> /root/.jupyter/jupyter_server_config.py
 
 COPY . .
 

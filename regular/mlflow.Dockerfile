@@ -8,5 +8,7 @@ RUN pip install --upgrade pip \
     && pip --no-cache-dir install "mlflow==2.10.2"
 
 EXPOSE $MLFLOW_PORT
-RUN test -d mlruns || mkdir mlruns
-CMD mlflow server --backend-store-uri sqlite:///mlruns/mlflow.db -h 0.0.0.0 -p $MLFLOW_PORT
+RUN test -d $MLRUNS_DIR || mkdir $MLRUNS_DIR
+CMD mlflow server \
+    --backend-store-uri sqlite:///$MLRUNS_DIR/mlflow.db \
+    -h 0.0.0.0 -p $MLFLOW_PORT

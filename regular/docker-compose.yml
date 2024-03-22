@@ -8,28 +8,32 @@ services:
       dockerfile: mlflow.Dockerfile
     environment:
       - MLFLOW_PORT=${MLFLOW_PORT}
+      - MLRUNS_DIR=${MLRUNS_DIR}
     ports:
       - "${MLFLOW_PORT}:${MLFLOW_PORT}"
     volumes:
-      - mlruns:/app/mlruns
+      - mlruns:/app/${MLRUNS_DIR}
 
   jupyter:
     image: aashish-fuse/docker-jupyter
     build:
       context: .
       dockerfile: jupyter.Dockerfile
+    depends_on:
+      mlflow:
+        condition: service_started
     environment:
       - JUPYTER_PORT=${JUPYTER_PORT}
       - JUPYTER_TOKEN=${JUPYTER_TOKEN}
     ports:
       - "${JUPYTER_PORT}:${JUPYTER_PORT}"
     volumes:
-      - mlruns:/app/mlruns
+      - mlruns:/app/${MLRUNS_DIR}
 
 volumes:
   mlruns:
     driver: local
     driver_opts:
-      device: /home/fm-pc-lt-284/Projects/Fusemachines/DS_Expert/docker-playground/mlruns
+      device: "${VOLUME_DEV}"
       o: bind
       type: none
